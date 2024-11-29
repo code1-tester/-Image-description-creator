@@ -1,1 +1,1 @@
-# -Image-description-creator
+# Image-description-creator
