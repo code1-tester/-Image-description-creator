@@ -58,7 +58,7 @@ image_label = Label(Window)
 caption_label = Label(Window, font=('Yu Gothic UI', 30), wraplength=800, justify="center")
 
 title_label.pack(pady=200)
-upload_button.pack(pady=200)
+upload_button.pack(pady=20)
 image_label.pack(pady=20)
 caption_label.pack(pady=20)
 
