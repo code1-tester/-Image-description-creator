@@ -12,15 +12,27 @@ def reset_ui():
     upload_button.pack()
 
 def upload_image():
-    file_path = filedialog.askopenfilename(
-        filetypes=[("Image files", "*.jpg;*.jpeg;*.png;*.bmp;*.gif")]
-    )
-    if file_path:
+    try:
+        print("File dialog opened.")
+        file_path = filedialog.askopenfilename(
+            filetypes=[("Image files", "*.jpg"), ("Image files", "*.jpeg"), ("Image files", "*.png"), 
+                      ("Image files", "*.bmp"), ("Image files", "*.gif")]
+        )
+        print(f"Selected file: {file_path}")
+        
+        if not file_path:  # 파일이 선택되지 않았을 때의 처리
+            print("No file selected.")
+            caption_label.config(text="No file selected.")
+            return
+
         img = Image.open(file_path)
         img.thumbnail((500, 500))
+        print("Image loaded and resized.")
+
         try:
             exif = img._getexif()
             if exif is not None:
+                print("EXIF data found.")
                 for tag, value in exif.items():
                     if ExifTags.TAGS.get(tag) == 'Orientation':
                         if value == 3:
@@ -29,21 +41,31 @@ def upload_image():
                             img = img.rotate(270, expand=True)
                         elif value == 8:
                             img = img.rotate(90, expand=True)
-        except (AttributeError, KeyError, IndexError):
-     
-            pass
+                print("EXIF data processed.")
+        except (AttributeError, KeyError, IndexError) as e:
+            print(f"EXIF error: {e}")
 
         img_tk = ImageTk.PhotoImage(img)
 
         image_label.config(image=img_tk)
         image_label.image = img_tk
 
-        caption, translated_caption = newthing.generate_caption(file_path)
-        caption_label.config(text=f"Caption: {caption}\nTranslated: {translated_caption}")
-
+        try:
+            print("Generating caption...")
+            caption, translated_caption = newthing.generate_caption(file_path)
+            caption_label.config(text=f"Caption: {caption}\nTranslated: {translated_caption}")
+            print("Caption generated.")
+        except Exception as e:
+            print(f"Caption generation error: {e}")
+            caption_label.config(text="Error generating caption.")
+        
         upload_button.pack_forget()
         title_label.pack_forget()
         back_button.pack(pady=20)
+        
+    except Exception as e:
+        print(f"Error: {e}")
+        caption_label.config(text="Error loading image.")
 
 Window = Tk()
 Window.attributes('-fullscreen', True)
