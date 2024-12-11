@@ -21,9 +21,11 @@ Salesforce/blip-image-captioning-base
 https://huggingface.co/Salesforce/blip-image-captioning-base
 
 설치 필요 
+
 pip install googletrans==4.0.0-rc1
 
 실행 방법
+
 본인의 운영체제에 맞는 OSS_GUI.py 파일을 선택하고 실행한다. 이후 upload image를 눌러 이미지를 선택한다.
 
 ##### 첫 번째 이미지(코드 실행 후 화면)
